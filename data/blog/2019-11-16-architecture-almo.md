@@ -1,6 +1,5 @@
 ---
 title: 单核心处理器，总线架构及外围设备
-layout: post
 summary: MIPS - 本篇文章我们将学习计算机物理，寻址空间及软件组成原理，探究处理器，内存以及外围设备间的信息沟通。
 date: 2019-11-17
 tags: ['System']
@@ -26,11 +25,12 @@ tags: ['System']
 后来的终端慢慢演变成了键盘 + 显示器。如果我们要把内容输出到显示器，只要把这些内容写入到显示器对应的 TTY 设备就可以了，然后由 TTY 层负责匹配合适的驱动完成输出。  
 每个外围设备所对应的寄存器的地址会映射在内存中。
 每个终端与四个寄存器相连
+
 - `TTY_WRITE`：将一个ascii字符显示在终端的屏幕上，处理器需要使用`sb`指令将一个byte写入`TTY_WRITE`寄存器的地址
 - `TTY_READ`：从键盘读取一个ascii字符，处理器需要使用`lb`指令将一个byte写入`TTY_READ`寄存器的地址
 - `TTY_STATUS`：判断`TTY_READ`中有无字符，处理器需要从`TTY_STATUS`读取一个长度为32bits的词
-    - 若这个词第0位不为0，则寄存器`TTY_READ`不为空
-    - 若这个词第1位不为0，则寄存器`TTY_WRITE`不为空
+  - 若这个词第0位不为0，则寄存器`TTY_READ`不为空
+  - 若这个词第1位不为0，则寄存器`TTY_WRITE`不为空
 - `TTY_CONFIG`：软件可以将外围设备的信息写入在这个寄存器内
 
 若`TTY_WRITE`收到读取信息的指令，或者`TTY_READ`/`TTY_STATUS`收到写入信息的指令，则TTY控制器会返回错误代码，并在处理器端触发一个异常（exception）：错误的程序将停止运行（interruption），处理器将会跳转至异常处理系统以触发异常*Data BUS Error*。  
@@ -39,6 +39,7 @@ TTY控制器能够作用于多个终端，而每个终端都具有4种TTY的控�
 ![périphériques cibles.jpg](https://dev.azure.com/zslyvain/9285f0e6-8055-4a5c-aec3-50d9555ac078/_apis/git/repositories/4eb461c6-bb1f-489f-978b-686e8c32decf/items?path=%2F1625856530949_9006.png&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=octetStream&api-version=5.0)
 
 下图记录了两个终端持有8个TTY寄存器的32bits地址段，其中
+
 - 第2，3位记录终端
 - 第4，5位记录4个寄存器中的哪一个
 
@@ -51,13 +52,15 @@ TTY控制器能够作用于多个终端，而每个终端都具有4种TTY的控�
 ![espace adressage.jpg](https://dev.azure.com/zslyvain/9285f0e6-8055-4a5c-aec3-50d9555ac078/_apis/git/repositories/4eb461c6-bb1f-489f-978b-686e8c32decf/items?path=%2F1625856532602_164.png&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=octetStream&api-version=5.0)
 
 用户模式地址区：
+
 - `seg_code`：用户程序（在`main.c`里定义）以及一些用户模式下
-所使用的外围设备的系统服务函数（在`stdio.c`中）。对应的地址为`seg_code_base = 0x00400000` 
+所使用的外围设备的系统服务函数（在`stdio.c`中）。对应的地址为`seg_code_base = 0x00400000`
 - `seg_data`：用户程序使用的全局数据，对应的地址是`seg_data_base = 0x10000000`
 - `seg_stack`：程序所使用的栈，对应的地址是
 `seg_stack_base = 0x20000000`  
 
 内核模式地址区：
+
 - `seg_reset`：在ROM中。机器启动代码，对应的地址是`seg_reset_base = 0xBFC00000`，代码定义在文件`reset.s`
 - `seg_kcode`：受操作系统保护的代码区。对应的地址是`seg_kcode_base = 0x80000000`，主要包含了**GIET**代码
 - `seg_kdata`：受操作系统保护的数据，对应的地址`seg_kdata_base = 0x81000000`
@@ -84,6 +87,7 @@ GIET代码启动时存储在RAM中因为其代码属于操作系统一部分，�
     - 分页错误，溢出等
 
 总结：操作系统应保证：
+
 - 服务质量（Quality of Service）：公平，优先权，期限
 - 应用安全：机密性，整体性
 - 硬件使用可靠性
@@ -101,14 +105,16 @@ GIET代码启动时存储在RAM中因为其代码属于操作系统一部分，�
 
 一个程序应该至少有一个`main()`函数用来启动，他的代码，数据以及堆栈都存储在内存中只要这个程序是可以在用户模式下运行的（也就是地址小于`0x80000000`）。  
 当应用需要访问外围设备时，他需要向系统内核通过`syscall`发出请求，通过系统代码库中的某个API来实现。  
+
 ```
-$4 à $7 ⇐ 系统服务参数
+$4 - $7 ⇐ 系统服务参数
 $2 ⇐ 系统服务代号
 syscall ≃ jal kernel
 $2 ⇒ 返回错误代码，或0表示成功
 ```
 
 ## 实例
+
 ```c
 #include <stdio.h>
 __attribute__((constructor)) void main(void)
@@ -129,10 +135,11 @@ __attribute__((constructor)) void main(void)
 这段程序为一个死循环，在每次循环中在屏幕上显示Hello World（`tty_puts(str);`），并且从键盘读入一个字符（`tty_getc(&byte);`），当读取到的字符为q时，退出循环，程序结束。
 
 输出信息的步骤：
+
 1. 启动时，处理器跳转到`0xBFC00000`并运行存储在`seg_reset`的启动代码
 2. 当处理器收到eret返回值时（即机器启动结束），开始运行`main()`函数的第一行代码（存储在`seg_code`）中
 3. 当处理器运行至`tty_puts(str);`时（存储在`seg_code`），跳转到其所在的地址段
-4. 处理器运行在`tty_puts()`中的`syscall`跳转至`0x80000180(seg_kcode)` 
+4. 处理器运行在`tty_puts()`中的`syscall`跳转至`0x80000180(seg_kcode)`
 5. **GIET**开始处理第一次跳转，调用他本身的系统函数`__tty_write()`，以在屏幕上输出一行长度已知的字符串。这个函数从`seg_data`中依次读取字符，并将其写入`seg_tty`中。（即在寄存器`TTY_WRITE`中）
 6. `__tty_write()`函数返回至`tty_puts()`再返回至`main()`
 
@@ -149,6 +156,7 @@ __attribute__((constructor)) void main(void)
 若ERL+EXL=1，则在KERNEL模式，IRQ非激活态
 
 典型值：
+
 - 0xFF11：用户模式
 - 0xFF13：在内核
 - 0xFF01：syscall
@@ -164,32 +172,32 @@ __attribute__((constructor)) void main(void)
 
 ## syscall
 
-1. EPC <-PC : 保存syscall的地址
-2. SR[EXL] = 1
-3. CR[XCODE] = 8 即1000 SYS，为进入的原因
-4. PC = 0x80000180
+1. `EPC <- PC` : 保存syscall的地址
+2. `SR[EXL] = 1`
+3. `CR[XCODE] = 8` 即1000 SYS，为进入的原因
+4. `PC = 0x80000180`
 
 ## Exception异常
 
-1. EPC <-PC : 保存syscall的地址
-2. SR[EXL] = 1
-3. CR[XCODE] = 异常原因
-4. PC = 0x80000180
+1. `EPC <-PC`: 保存syscall的地址
+2. `SR[EXL] = 1`
+3. `CR[XCODE] = 异常原因`
+4. `PC = 0x80000180`
 
 # 从内核返回用户应用
 
-1. SR[EXL] = 0
-2. PC = EPC
+1. `SR[EXL] = 0`
+2. `PC = EPC`
 
 # GIET构成
 
 > GIET = "Gestionnaire d'Interruptions, Exceptions et Trappes" or Exception Handling
 
-## E - Exception异常：
+## E - Exception异常
 
 由于程序出错而导致的系统异常，例如除数为0，地址未对齐。异常通常导致程序错误地终止。异常管理器应当诊断出异常的类型，并显示异常信息以帮助程序员修改程序。异常管理器在文件`exc_handler.c`中
 
-## I - Interruption中断：
+## I - Interruption中断
 
 来自于硬件，在软件层面上，中断是不可预知的，并随时有可能发生。
 
@@ -199,7 +207,7 @@ __attribute__((constructor)) void main(void)
 
    > L'ICU est un multi concentrateur de signaux d'IRQ. Chaque IRQ peut être masquée. Dans le cas d'une architecture multi cores, il permet de router l'IRQ vers n'importe quel core. C'est un périphérique cible contrôlé par des accès en lecture/écriture en registres.
 
-## T - Trappe风道(系统调用)：
+## T - Trappe风道(系统调用)
 
 由用户模式的应用软件向系统内核发送的服务调用请求，以`syscall`的方式发出，例如在TTY终端读写或是读写硬盘。通过`syscall`处理的方式为
 
@@ -234,21 +242,21 @@ TIMER包含了一个计时器，可定时触发一个中断，通过读写寄存
 
   在`stido.c`中有TIMER源代码，其中部分函数用法如下
 
-  - `timer_set_period()`: 
+  - `timer_set_period()`:
 
-  This function defines the period value of a timer to enable a periodic interrupt.         
+  This function defines the period value of a timer to enable a periodic interrupt.
 
   Returns 0 if success , > 0 if error .
 
-  - `timer_set_mode (int mode)`: 
+  - `timer_set_mode (int mode)`:
 
     This function defines the operation mode of a timer . The possible values forthis mode are:
 
     - 0x0 : Timer not activated
 
-    * 0x1 : Timer activated , but no interrupt is generated
+    - 0x1 : Timer activated , but no interrupt is generated
 
-  * 0x3 : Timer activarted and periodic interrupts generated.
+  - 0x3 : Timer activarted and periodic interrupts generated.
 
   Returns 0 if success , > 0 if error.
 
@@ -259,7 +267,7 @@ TIMER包含了一个计时器，可定时触发一个中断，通过读写寄存
 
   若将这两个函数放入代码中，则每隔5,000,000cycles，屏幕会输出TIMER中断信息" Interrupt timer received at cycle : "+当前处理器经过的cycles数
 
-  ## ICU
+## ICU
 
 ICU : Interrupt Concentrator Unity中断集中器。每个IRQ都可能会被隐藏，在多核心架构中，它将不同的IRQ导向不同的核心。
 
@@ -305,6 +313,3 @@ li $27, 0xA
 sw $27, 2*4($26)
 /* ICU_MASK_SET = 0xA */
 ```
-
-
-
