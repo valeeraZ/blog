@@ -4,10 +4,11 @@ date: '2022-06-12'
 tags: ['Docker','Flask','DevOps']
 draft: false
 summary: Use GitHub Actions to build and push image to GitHub Package Registry
-images: []
+images: ['/static/images/docker-flask-gunicorn.png']
 layout: PostLayout
 canonicalUrl:
 ---
+![docker-flask-gunicorn](/static/images/docker-flask-gunicorn.png)
 
 For development and test, we might need to create rapidly a simple workflow to deploy a web application in a server (like AWS EC2). In this post, I have a Flask application to deploy on a server by using Docker and I will give some of my practices on writing config/workflow files from StackOverflow or medium... which might not be best, but useful for me.
 
