@@ -44,8 +44,7 @@ export default function Home({ posts }) {
                 <h1 className="text-neutral-900 dark:text-neutral-200">
                   <p>
                     A Full Stack Engineer. Working with{' '}
-                    <span className="font-medium">Back-End</span>
-                    {' '}with micro-services.
+                    <span className="font-medium">Back-End</span> with micro-services.
                   </p>
                   Based at <span className="font-medium">Paris 🇫🇷</span>
                 </h1>
