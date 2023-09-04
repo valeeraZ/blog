@@ -43,21 +43,22 @@ export default function Home({ posts }) {
               <div className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-400">
                 <h1 className="text-neutral-900 dark:text-neutral-200">
                   <p>
-                    A Full Stack Engineer. Working with <span className="font-medium">data</span>{' '}
-                    and <span className="font-medium">search algorithms</span>.
+                    A Full Stack Engineer. Working with <span className="font-medium">Back-End</span> with micro-services.
                   </p>
                   Based at <span className="font-medium">Paris 🇫🇷</span>
                 </h1>
                 <p className="mt-4 mb-8">
-                  Studying computer science since 2017 in France.
+                  Study computer science from 2017 to 2022 in France.
                   <br />
                   Had research in <span className="font-medium">complex graph</span> and{' '}
                   <span className="font-medium">search algorithms</span>.
                   <br />
-                  Currently Intern at Starzdata as Full Stack Data Engineer Junior.
+                  Currently working as Full Stack Web Developer. <span className="font-medium">Looking for new opportunities of permanent job in Paris.</span>
                   <br />
-                  Using <span className="font-medium">Flask</span>, Spring, Next.js, Tailwind CSS
+                  Using <span className="font-medium">Fast API</span>, Flask, Next.js, Tailwind CSS
                   and <span className="font-medium">Elastic Search</span> to develop web apps.
+                  <br />
+                  Have experience in <span className="font-medium">RabbitMQ</span> and Redis.
                 </p>
                 <p className="my-6">Happy reading</p>
               </div>
