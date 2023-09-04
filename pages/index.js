@@ -43,7 +43,9 @@ export default function Home({ posts }) {
               <div className="mt-4 text-lg leading-8 text-gray-600 dark:text-gray-400">
                 <h1 className="text-neutral-900 dark:text-neutral-200">
                   <p>
-                    A Full Stack Engineer. Working with{' '}<span className="font-medium">Back-End</span>{' '}with micro-services.
+                    A Full Stack Engineer. Working with{' '}
+                    <span className="font-medium">Back-End</span>
+                    {' '}with micro-services.
                   </p>
                   Based at <span className="font-medium">Paris 🇫🇷</span>
                 </h1>
