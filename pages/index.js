@@ -53,7 +53,8 @@ export default function Home({ posts }) {
                   Had research in <span className="font-medium">complex graph</span> and{' '}
                   <span className="font-medium">search algorithms</span>.
                   <br />
-                  Currently working as Full Stack Web Developer. <span className="font-medium">Looking for new opportunities of permanent job in Paris.</span>
+                  Currently working as Full Stack Web Developer. {' '}
+                  <span className="font-medium">Looking for new opportunities of permanent job in Paris.</span>
                   <br />
                   Using <span className="font-medium">Fast API</span>, Flask, Next.js, Tailwind CSS
                   and <span className="font-medium">Elastic Search</span> to develop web apps.
