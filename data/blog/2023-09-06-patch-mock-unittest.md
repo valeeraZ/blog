@@ -4,6 +4,8 @@ date: '2023-09-06'
 lastmod: '2023-09-06'
 tags: ['Testing', 'Python', 'FastAPI']
 draft: false
+images: ['/static/images/fastapi_testing.png']
+layout: PostLayout
 summary: 'Async unittest within Fast API'
 ---
 
