@@ -2,10 +2,12 @@
 title: 'Use patch and mock in async unittest'
 date: '2023-09-06'
 lastmod: '2023-09-06'
-tags: ['Testing','Python','FastAPI']
+tags: ['Testing', 'Python', 'FastAPI']
 draft: false
 summary: 'Async unittest within Fast API'
 ---
+
+![fastapi-unittest](/static/images/fastapi_testing.png)
 
 Using a mock object in unittest is a common practice to test a function which depends on other functions. In this post, I will show how did I use `patch` and `mock` in unittest of endpoints of a FastAPI app, especially for async functions and dependency injection.
 
@@ -103,7 +105,7 @@ async def test_create_contact(
     self.app.dependency_overrides = {
         get_contact_command_service: lambda: mock_get_contact_command_service,
     }
-    
+
     async with AsyncClient(app=self.app, base_url="http://test") as client:
         response = await client.post("/api/contacts", json=contact_dict_a_create)
 
@@ -130,7 +132,7 @@ async def test_create_contact(
 ) -> None
 ```
 
-The signature of test function. The `mock_get_contact_command_service` parameter is the mock object created by `@patch` decorator. The `self` parameter is the test class itself.  
+The signature of test function. The `mock_get_contact_command_service` parameter is the mock object created by `@patch` decorator. The `self` parameter is the test class itself.
 
 ```python
 mock_get_contact_command_service.create_contact.side_effect = (
