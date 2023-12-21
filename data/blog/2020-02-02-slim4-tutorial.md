@@ -2,12 +2,12 @@
 title: Slim4教程 tutorial
 summary: php REST API by Slim4 - This tutorial shows you how to work with the powerful and lightweight Slim 4 framework.
 date: 2020-02-02
-tags: ['php', 'REST API']
+tags: ['php']
 ---
 
 This tutorial shows you how to work with the powerful and lightweight Slim 4 framework.
 
-这篇教程将向你展示如何使用轻量级且功能强大的Slim4框架。
+这篇教程将向你展示如何使用轻量级且功能强大的 Slim4 框架。
 
 Slim Framework is a great microframework for web applications, RESTful API's and websites.
 
@@ -15,33 +15,33 @@ Our aim is to create a RESTful API with routing, business logic and database ope
 
 Standards like [PSR](https://www.php-fig.org/psr/) and best practices are very important and integrated part of this tutorial.
 
-Slim框架是一款面向web app，REST API以及网站的轻量级框架。我们的目标是编写一个具备路由，业务逻辑以及数据库操作的RESTful API。在这篇教程中，一些标准（例如PSR）将非常重要。
+Slim 框架是一款面向 web app，REST API 以及网站的轻量级框架。我们的目标是编写一个具备路由，业务逻辑以及数据库操作的 RESTful API。在这篇教程中，一些标准（例如 PSR）将非常重要。
 
 ## Requirements 准备
 
-* PHP 7.1+
-* MySQL 5.7+
-* Apache webserver
-* Composer
+- PHP 7.1+
+- MySQL 5.7+
+- Apache webserver
+- Composer
 
 ## Installation 安装
 
 Create a new project directory and run this command to install the Slim 4 core components:
 
-创建一个新工程文件夹，在此文件夹下运行如下指令以安装Slim4核心组件：
+创建一个新工程文件夹，在此文件夹下运行如下指令以安装 Slim4 核心组件：
 
 ```
 composer require slim/slim:"4.*"
 ```
 
-In Slim 4 the PSR-7 implementation is decoupled from the App core. 
+In Slim 4 the PSR-7 implementation is decoupled from the App core.
 This means you can also install other PSR-7 implementations like [nyholm/psr7](https://github.com/Nyholm/psr7).
 
-在Slim4框架中，PSR-7被从核心组件中剥离开，这意味着你可以安装其他类型的的PSR-7，例如[nyholm/psr7](https://github.com/Nyholm/psr7).
+在 Slim4 框架中，PSR-7 被从核心组件中剥离开，这意味着你可以安装其他类型的的 PSR-7，例如[nyholm/psr7](https://github.com/Nyholm/psr7).
 
 In our case we are installing the Slim PSR-7 implementations using this command:
 
-在我们的教程中，我们将安装由Slim实现的PSR-7。运行如下指令：
+在我们的教程中，我们将安装由 Slim 实现的 PSR-7。运行如下指令：
 
 ```
 composer require slim/psr7
@@ -57,11 +57,11 @@ composer require slim/http
 
 As next we need a PSR-11 container implementation for **dependency injection** and **autowiring**.
 
-下一步我们需要一个PSR-11 container容器，以便于**依赖注入**以及**自动关联**。
+下一步我们需要一个 PSR-11 container 容器，以便于**依赖注入**以及**自动关联**。
 
 Run this command to install [PHP-DI](http://php-di.org/):
 
-运行如下指令安装[PHP-DI](http://php-di.org/): （中文文档：[php-di中文文档](https://www.kancloud.cn/shanyu/php-di/182580)）
+运行如下指令安装[PHP-DI](http://php-di.org/): （中文文档：[php-di 中文文档](https://www.kancloud.cn/shanyu/php-di/182580)）
 
 ```
 composer require php-di/php-di
@@ -69,7 +69,7 @@ composer require php-di/php-di
 
 To access the application configuration install the `selective/config` package:
 
-安装`selective/config`以对app做配置：
+安装`selective/config`以对 app 做配置：
 
 ```
 composer require selective/config
@@ -89,7 +89,7 @@ Ok nice, now we have installed the most basic dependencies for our project. Late
 
 **Note:** Please don't commit the `vendor/` to your git repository. To set up the git repository correctly, create a file called `.gitignore` in the project root folder and add the following lines to this file:
 
-请不要将`vendor/`加入git仓库，可以通过编写`.gitignore`文件来设置git。
+请不要将`vendor/`加入 git 仓库，可以通过编写`.gitignore`文件来设置 git。
 
 ```
 vendor/
@@ -100,7 +100,7 @@ vendor/
 
 A good directory structure helps you organize your code, simplifies setup on the webserver and increases the security of the entire application.
 
-一个好的文件夹结构能帮助你更好地理清代码间的关系，简化服务器配置以及提高app安全性。
+一个好的文件夹结构能帮助你更好地理清代码间的关系，简化服务器配置以及提高 app 安全性。
 
 Create the following directory structure in the root directory of your project:
 
@@ -120,33 +120,32 @@ Create the following directory structure in the root directory of your project:
 └── .gitignore          Git ignore rules
 ```
 
-In a web application, it is important to distinguish between the public and 
+In a web application, it is important to distinguish between the public and
 non-public areas.
 
-在一个web app中，需要分清公共区域和非公共区域之间的关系。
+在一个 web app 中，需要分清公共区域和非公共区域之间的关系。
 
-The `public/` directory serves your application and will therefore also be 
-directly accessible by all browsers, search engines and API clients. 
-All other folders are not public and must not be accessible online. 
-This can be done by defining the `public` folder in Apache as `DocumentRoot` 
+The `public/` directory serves your application and will therefore also be
+directly accessible by all browsers, search engines and API clients.
+All other folders are not public and must not be accessible online.
+This can be done by defining the `public` folder in Apache as `DocumentRoot`
 of your website. But more about that later.
 
-`public/`文件夹用来服务于你的app因此它也必须是对所有浏览器，搜索引擎以及API客户端**可见**。其它非公共文件夹在线上应当为**不可见**。可以通过设置apache服务器的public文件夹为document root。
+`public/`文件夹用来服务于你的 app 因此它也必须是对所有浏览器，搜索引擎以及 API 客户端**可见**。其它非公共文件夹在线上应当为**不可见**。可以通过设置 apache 服务器的 public 文件夹为 document root。
 
-
-## Apache URL rewriting 重写apache url
+## Apache URL rewriting 重写 apache url
 
 To run a Slim app with apache we have to add url rewrite rules to redirect the web traffic to a so called [front controller](https://en.wikipedia.org/wiki/Front_controller).
 
-为了在apache下启动我们的Slim app，我们需要定义重定向规则，也就是一个前端控制器。
+为了在 apache 下启动我们的 Slim app，我们需要定义重定向规则，也就是一个前端控制器。
 
 The front controller is just a `index.php` file and the entry point to the application.
 
-前段控制器其实就是一个`index.php`文件，它是我们的app的入口。
+前段控制器其实就是一个`index.php`文件，它是我们的 app 的入口。
 
-* Create a directory: `public/` 新建`public/`文件夹（在上一部分应当已经建好）
+- Create a directory: `public/` 新建`public/`文件夹（在上一部分应当已经建好）
 
-* Create a `.htaccess` file in your `public/` directory and copy/paste this content:
+- Create a `.htaccess` file in your `public/` directory and copy/paste this content:
 
   在改文件夹下新建`.htaccess`文件，拷贝如下内容：
 
@@ -163,9 +162,9 @@ Please **don't** change the `RewriteRule` directive. It must be exactly as shown
 
 请不要修改`RewriteRule`规则，它必须和上面代码一致。
 
-* Create a second `.htaccess` file in your project root-directory and copy/paste this content:
+- Create a second `.htaccess` file in your project root-directory and copy/paste this content:
 
-  在app文件夹根目录下新建第二个`.htaccess`文件，拷贝以下内容：
+  在 app 文件夹根目录下新建第二个`.htaccess`文件，拷贝以下内容：
 
 ```htaccess
 RewriteEngine on
@@ -174,11 +173,11 @@ RewriteRule (.*) public/$1 [L]
 ```
 
 Don't skip this step. This second `.htaccess` file is important to run your Slim app in a sub-directory
-and within your development environment. 
+and within your development environment.
 
-不要跳过这一步，如果你的Slim app在服务器的子文件夹下运行，那么第二个`.htaccess`文件对你的Slim app至关重要。
+不要跳过这一步，如果你的 Slim app 在服务器的子文件夹下运行，那么第二个`.htaccess`文件对你的 Slim app 至关重要。
 
-* Create the front-controller file `public/index.php` and copy/paste this content:
+- Create the front-controller file `public/index.php` and copy/paste this content:
 
   新建前端控制器文件`public/index.php`，拷贝以下内容
 
@@ -188,10 +187,10 @@ and within your development environment.
 (require __DIR__ . '/../config/bootstrap.php')->run();
 ```
 
-The [front controller](https://en.wikipedia.org/wiki/Front_controller) is the entry point 
+The [front controller](https://en.wikipedia.org/wiki/Front_controller) is the entry point
 to your slim application and handles all requests by channeling requests through a single handler object.
 
-前端控制器是你的Slim app的入口，它通过一个处理器对象处理所有请求。
+前端控制器是你的 Slim app 的入口，它通过一个处理器对象处理所有请求。
 
 ## Configuration 配置
 
@@ -199,16 +198,16 @@ The directory for all configuration files is: `config/`
 
 将配置文件放在`config/`目录下。
 
-The file `config/settings.php` is the main configuration file and combines 
-the default settings with environment specific settings. 
+The file `config/settings.php` is the main configuration file and combines
+the default settings with environment specific settings.
 
 `config/settings.php`是生产环境的配置文件。
 
-* Create a directory: `config/`
+- Create a directory: `config/`
 
   新建目录`config/`
 
-* Create a configuration file `config/settings.php` and copy/paste this content:
+- Create a configuration file `config/settings.php` and copy/paste this content:
 
   新建配置文件`config/settings.php` ，拷贝以下内容
 
@@ -250,14 +249,14 @@ return $settings;
 
 ### Startup 启动
 
-The app startup process contains the code that is executed when the application (request) is started. 
+The app startup process contains the code that is executed when the application (request) is started.
 
-当收到数据请求时，app便会启动
+当收到数据请求时，app 便会启动
 
 The bootstrap procedure includes the composer autoloader and then continues to
 build the container, creates the app and registers the routes + middleware entries.
 
-启动引导过程注册各个类库的类文件自动加载器，之后建立容器，实例化app以及注册各个路由和中间件入口。
+启动引导过程注册各个类库的类文件自动加载器，之后建立容器，实例化 app 以及注册各个路由和中间件入口。
 
 Create the bootstrap file `config/bootstrap.php` and copy/paste this content:
 
@@ -314,7 +313,7 @@ return function (App $app) {
 
 A middleware can be executed before and after your Slim application to manipulate the request and response object according to your requirements.
 
-一个中间件可以根据你的需求，在Slim app启动前及启动后运行。
+一个中间件可以根据你的需求，在 Slim app 启动前及启动后运行。
 
 [Read more](http://www.slimframework.com/docs/v4/concepts/middleware.html)
 
@@ -338,7 +337,7 @@ return function (App $app) {
     $app->addRoutingMiddleware();
 
     $container = $app->getContainer();
-    
+
     // Add error handler middleware
     $settings = $container->get(Configuration::class)->getArray('error_handler_middleware');
     $displayErrorDetails = (bool)$settings['display_error_details'];
@@ -354,7 +353,7 @@ return function (App $app) {
 
 ### A quick guide to the container 容器快速入门
 
-*（本段翻译不准确）*
+_（本段翻译不准确）_
 
 **[Dependency injection](https://en.wikipedia.org/wiki/Dependency_injection)** is passing dependency to other objects.
 Dependency injection makes testing easier. The injection can be done through a constructor.
@@ -366,59 +365,59 @@ A **dependencies injection container** (DIC) is a tool for injecting dependencie
 一个**依赖注入容器**是一个注入依赖的工具。
 
 **A general rule:** The core application should not use the container.
-Injecting the container into a class is an **anti-pattern**. You should declare all class 
-dependencies in the constructor explicitly. 
+Injecting the container into a class is an **anti-pattern**. You should declare all class
+dependencies in the constructor explicitly.
 
-app核心部分不应该使用容器。将一个依赖注入容器注入到类中是**反设计模式**，（隐式地建立了对于容器的依赖，而不是真正需要替换的依赖，而且还会让你的代码更不透明，最终变得更难测试）。你应该在构造函数中显式地声明所有依赖类。
+app 核心部分不应该使用容器。将一个依赖注入容器注入到类中是**反设计模式**，（隐式地建立了对于容器的依赖，而不是真正需要替换的依赖，而且还会让你的代码更不透明，最终变得更难测试）。你应该在构造函数中显式地声明所有依赖类。
 
 Why is injecting the container (in most cases) an anti-pattern?
 
 为什么把容器注入到类中是一种反设计模式（大多数情况下）？
 
 In Slim 3 the [Service Locator](https://blog.ploeh.dk/2010/02/03/ServiceLocatorisanAnti-Pattern/) (anti-pattern) was the
-default "style" to inject the whole ([Pimple](https://pimple.symfony.com/)) container and fetch the dependencies from it. 
+default "style" to inject the whole ([Pimple](https://pimple.symfony.com/)) container and fetch the dependencies from it.
 However, there are the following disadvantages:
 
-在Slim3中，服务定位模式（反设计模式）是一种默认的风格：将整个容器注入进去然后从中获取依赖。然而，这种模式有以下几个缺点：
+在 Slim3 中，服务定位模式（反设计模式）是一种默认的风格：将整个容器注入进去然后从中获取依赖。然而，这种模式有以下几个缺点：
 
-* The Service Locator (anti-pattern) **hides the actual dependencies** of your class. 
+- The Service Locator (anti-pattern) **hides the actual dependencies** of your class.
 
   服务定位器隐藏了你的类中所需要的依赖
 
-* The Service Locator (anti-pattern) also violates the [Inversion of Control](https://en.wikipedia.org/wiki/Inversion_of_control) (IoC) principle of [SOLID](https://en.wikipedia.org/wiki/SOLID).
+- The Service Locator (anti-pattern) also violates the [Inversion of Control](https://en.wikipedia.org/wiki/Inversion_of_control) (IoC) principle of [SOLID](https://en.wikipedia.org/wiki/SOLID).
 
-  服务定位器也违反了SOLID规则中的IoC反转控制。
+  服务定位器也违反了 SOLID 规则中的 IoC 反转控制。
 
-Q: How can I make it better?  我该怎样做？
+Q: How can I make it better? 我该怎样做？
 
-A: Use [composition over inheritance](https://en.wikipedia.org/wiki/Composition_over_inheritance) 
-and (constructor) **dependency injection**. 
+A: Use [composition over inheritance](https://en.wikipedia.org/wiki/Composition_over_inheritance)
+and (constructor) **dependency injection**.
 
 使用组合大于依赖以及（构造函数）以及**依赖注入**。
 
-Dependency injection is a programming practice of passing into an object it’s collaborators, 
-rather the object itself creating them. 
+Dependency injection is a programming practice of passing into an object it’s collaborators,
+rather the object itself creating them.
 
 依赖注入是一种良好的设计模式，将参数赋予对象的构造函数，而不是要求对象本身实例化。
 
-Since **Slim 4** you can use modern tools like [PHP-DI](http://php-di.org/) with the awesome [autowire](http://php-di.org/doc/autowiring.html) feature. 
-This means: Now you can declare all dependencies explicitly in your constructor and let the DIC inject these 
-dependencies for you. 
+Since **Slim 4** you can use modern tools like [PHP-DI](http://php-di.org/) with the awesome [autowire](http://php-di.org/doc/autowiring.html) feature.
+This means: Now you can declare all dependencies explicitly in your constructor and let the DIC inject these
+dependencies for you.
 
-自Slim4开始，你可以使用像php-di一类具有**自动装配**功能的工具，这也就是说：现在你可以在构造函数内显式地声明所需要的依赖，让DIC来替你注入这些依赖。
+自 Slim4 开始，你可以使用像 php-di 一类具有**自动装配**功能的工具，这也就是说：现在你可以在构造函数内显式地声明所需要的依赖，让 DIC 来替你注入这些依赖。
 
-To be more clear: Composition has nothing to do with the "autowire" feature of the DIC. You can use composition 
-with pure classes and without a container or anything else. The autowire feature just uses the 
-[PHP Reflection](https://www.php.net/manual/en/book.reflection.php) classes to resolve and inject the 
+To be more clear: Composition has nothing to do with the "autowire" feature of the DIC. You can use composition
+with pure classes and without a container or anything else. The autowire feature just uses the
+[PHP Reflection](https://www.php.net/manual/en/book.reflection.php) classes to resolve and inject the
 dependencies automatically for you.
 
-“组合”与DIC的“自动装配”没有任何联系，你可以单单使用类来组合而不需要容器或者其他的组件。自动装配通过使用php反射来帮助你自动地解决病注入依赖。
+“组合”与 DIC 的“自动装配”没有任何联系，你可以单单使用类来组合而不需要容器或者其他的组件。自动装配通过使用 php 反射来帮助你自动地解决病注入依赖。
 
 ### Container definitions 容器的定义
 
-Slim 4 uses a dependency injection container to prepare, manage and inject application dependencies. 
+Slim 4 uses a dependency injection container to prepare, manage and inject application dependencies.
 
-Slim4使用依赖注入容器来准备，管理以及注入app所需要的依赖。
+Slim4 使用依赖注入容器来准备，管理以及注入 app 所需要的依赖。
 
 You can add any container library that implements the [PSR-11](https://www.php-fig.org/psr/psr-11/) interface.
 
@@ -457,11 +456,11 @@ return [
 
 ## Base path 路径
 
-If you run your Slim app in a sub-directory, resp. not directly within the 
+If you run your Slim app in a sub-directory, resp. not directly within the
 [DocumentRoot](https://httpd.apache.org/docs/2.4/en/mod/core.html#documentroot)
 of your webserver, you must set the "correct" base path.
 
-如果你不是直接在[DocumentRoot](https://httpd.apache.org/docs/2.4/en/mod/core.html#documentroot)下运行你的app，那么请务必设置好启动路径
+如果你不是直接在[DocumentRoot](https://httpd.apache.org/docs/2.4/en/mod/core.html#documentroot)下运行你的 app，那么请务必设置好启动路径
 
 Ideally the `DoumentRoot` of your production server points directly to the `public/` directory.
 
@@ -469,7 +468,7 @@ In all other cases you have to make sure, that your base path is correct. For ex
 the DocumentRoot directory is `/var/www/domain.com/htdocs/`, but the application
 is stored under `/var/www/domain.com/htdocs/my-app/`, then you have to set `/my-app` as base path.
 
-理想状况：你的服务器仅仅用于这一个Slim app，那么`DoumentRoot` 可以直接指向`public/` 目录（其实也就是这个工程的根目录就是`DoumentRoot`）。如果不是，你可以在`config/container.php`文件中设置一下：（上面的代码中这个设置被注释掉了）
+理想状况：你的服务器仅仅用于这一个 Slim app，那么`DoumentRoot` 可以直接指向`public/` 目录（其实也就是这个工程的根目录就是`DoumentRoot`）。如果不是，你可以在`config/container.php`文件中设置一下：（上面的代码中这个设置被注释掉了）
 
 Example:
 
@@ -477,22 +476,24 @@ Example:
 $app->setBasePath('/my-app');
 ```
 
-Be careful: The `public/` directory is only the `DoumentRoot` of your webserver, 
+Be careful: The `public/` directory is only the `DoumentRoot` of your webserver,
 but it's never part of your base path and the official url.
 
-注意：不要让`public/`出现在你的url中，他只是作用在你的网络服务器里。
+注意：不要让`public/`出现在你的 url 中，他只是作用在你的网络服务器里。
 
 Bad urls 不好的网址
-* `http://www.example.com/public`
-* `http://www.example.com/public/users`
-* `http://www.example.com/my-app/public`
-* `http://www.example.com/my-app/public/users`
+
+- `http://www.example.com/public`
+- `http://www.example.com/public/users`
+- `http://www.example.com/my-app/public`
+- `http://www.example.com/my-app/public/users`
 
 Good urls: 好的网址
-* `http://www.example.com`
-* `http://www.example.com/users`
-* `http://www.example.com/my-app`
-* `http://www.example.com/my-app/users`
+
+- `http://www.example.com`
+- `http://www.example.com/users`
+- `http://www.example.com/my-app`
+- `http://www.example.com/my-app/users`
 
 ## Your first route 你的第一个路由
 
@@ -526,15 +527,16 @@ If you get a **404 error (not found)**, you should define the correct **basePath
 如果你遇到了**404 error (not found)**错误，应该在`config/container.php`设置根目录，例如
 
 **Example:**
+
 ```
 $app->setBasePath('/slim4-tutorial');
 ```
 
-## PSR-4 autoloading PSR-4自动加载
+## PSR-4 autoloading PSR-4 自动加载
 
 For the next steps we have to register the `\App` namespace for the PSR-4 autoloader.
 
-下一步我们需要为PSR-4自动加载器设置`\App`命名空间
+下一步我们需要为 PSR-4 自动加载器设置`\App`命名空间
 
 Add this autoloading settings into `composer.json`:
 
@@ -559,30 +561,30 @@ The complete `composer.json` file should look like this:
 
 ```json
 {
-    "require": {
-        "php-di/php-di": "^6.0",
-        "selective/config": "^0.1.1",
-        "slim/http": "^1",
-        "slim/psr7": "^1",
-        "slim/slim": "^4.4"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^8.4"
-    },
-    "autoload": {
-        "psr-4": {
-            "App\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "App\\Test\\": "tests"
-        }
-    },
-    "config": {
-        "process-timeout": 0,
-        "sort-packages": true
+  "require": {
+    "php-di/php-di": "^6.0",
+    "selective/config": "^0.1.1",
+    "slim/http": "^1",
+    "slim/psr7": "^1",
+    "slim/slim": "^4.4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Test\\": "tests"
+    }
+  },
+  "config": {
+    "process-timeout": 0,
+    "sort-packages": true
+  }
 }
 ```
 
@@ -596,55 +598,55 @@ Each **Single Action Controller** is represented by a individual class or closur
 
 类或闭包函数代表了每个**单独的动作控制器**。
 
-The *Action* does only these things:
+The _Action_ does only these things:
 
 *Action*仅做如下事情：
 
-* collects input from the HTTP request (if needed)
+- collects input from the HTTP request (if needed)
 
-  从HTTP请求中收集输入参数
+  从 HTTP 请求中收集输入参数
 
-* invokes the **Domain** with those inputs (if required) and retains the result
+- invokes the **Domain** with those inputs (if required) and retains the result
 
   用这些参数（如果需要的话）调用**域名**并保留结果
 
-* builds an HTTP response (typically with the Domain invocation results).
+- builds an HTTP response (typically with the Domain invocation results).
 
-  创建一个HTTP回复（使用API域名所产生的数据报）
+  创建一个 HTTP 回复（使用 API 域名所产生的数据报）
 
-All other logic, including all forms of input validation, error handling, and so on, 
-are therefore pushed out of the Action and into the **Domain** 
-(for domain logic concerns) or the response renderer (for presentation logic concerns). 
+All other logic, including all forms of input validation, error handling, and so on,
+are therefore pushed out of the Action and into the **Domain**
+(for domain logic concerns) or the response renderer (for presentation logic concerns).
 
-对所有的其它业务逻辑，包含了输入参数，错误处理等其它模块，都会被注入进Action以及域名以及回复处理器。
+对所有的其它业务逻辑，包含了输入参数，错误处理等其它模块，都会被注入进 Action 以及域名以及回复处理器。
 
-A response could be rendered to HTML (e.g with Twig) for a standard web request; or 
+A response could be rendered to HTML (e.g with Twig) for a standard web request; or
 it might be something like JSON for RESTful API requests.
 
-对于一个标准的web请求，回复可能被处理为HTML格式，或者对于RESTful API请求来说，回复应当是JSON格式。
+对于一个标准的 web 请求，回复可能被处理为 HTML 格式，或者对于 RESTful API 请求来说，回复应当是 JSON 格式。
 
-**Note:** [Closures](https://www.php.net/manual/en/class.closure.php) (functions) as routing 
-handlers are quite "expensive", because PHP has to create all closures for each request. 
+**Note:** [Closures](https://www.php.net/manual/en/class.closure.php) (functions) as routing
+handlers are quite "expensive", because PHP has to create all closures for each request.
 The use of class names is more lightweight, faster and scales better for larger applications.
 
-**注意**：用闭包函数作为路由处理的代价是相当昂贵的，因为php将对每个请求都建立一个闭包函数。对大型app，使用类名是更加轻量，快速的。
+**注意**：用闭包函数作为路由处理的代价是相当昂贵的，因为 php 将对每个请求都建立一个闭包函数。对大型 app，使用类名是更加轻量，快速的。
 
-More details about the flow of everything that happens when arriving a route 
+More details about the flow of everything that happens when arriving a route
 and the communication between the different layers can be found here: [Action](https://odan.github.io/slim4-skeleton/action.html)
 
 阅读更多有关于路由及各个层信息传输的教程： [Action](https://odan.github.io/slim4-skeleton/action.html)
 
-* Create a directory: `src/`
+- Create a directory: `src/`
 
   新建文件夹`src/`
 
-* Create a sub-directory: `src/Action`
+- Create a sub-directory: `src/Action`
 
   新建子文件夹：`src/Action`
 
-* Create this action class in: `src/Action/HomeAction.php`
+- Create this action class in: `src/Action/HomeAction.php`
 
-  新建文件`src/Action/HomeAction.php`，插入这个action类
+  新建文件`src/Action/HomeAction.php`，插入这个 action 类
 
 ```php
 <?php
@@ -691,7 +693,7 @@ Now open your website, e.g. http://localhost and you should see the message `Hel
 
 打开 http://localhost，你应该可以看到`Hello, World!`。
 
-### Writing JSON to the response 将JSON写入回复中
+### Writing JSON to the response 将 JSON 写入回复中
 
 Instead of calling `json_encode` everytime, you can use the `withJson()` method to render the response.
 
@@ -716,27 +718,27 @@ final class HomeAction
 
 Open your website, e.g. http://localhost and you should see the JSON response `{"success":true}`.
 
-打开 http://localhost，你应该可以看到JSON回复`{"success":true}`。
+打开 http://localhost，你应该可以看到 JSON 回复`{"success":true}`。
 
 To change to http status code, just use the `$response->withStatus(x)` method. Example:
 
-如若需更改http状态码，使用`$response->withStatus(x)`方法。
+如若需更改 http 状态码，使用`$response->withStatus(x)`方法。
 
 ```php
 $result = ['error' => ['message' => 'Validation failed']];
-        
+
 return $response->withJson($result)->withStatus(422);
 ```
 
 ## Domain 域名
 
-Forget CRUD! Your API should reflect the business [use cases](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) 
-and not the technical "database operations" aka. [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete). 
-Don't put business logic into actions. The action invokes the domain layer, 
-resp. the application service. If you want to reuse the same logic in another action, 
+Forget CRUD! Your API should reflect the business [use cases](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+and not the technical "database operations" aka. [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete).
+Don't put business logic into actions. The action invokes the domain layer,
+resp. the application service. If you want to reuse the same logic in another action,
 then just invoke that application service you need in your action.
 
-忘记CRUD！你的API应该体现**业务用例**，而不是什么技术方面的所谓「数据库操作」CRUD。不要把业务逻辑放进action里，action仅仅是调用域名层，即service。如果你想在其他action内复用相同的业务逻辑，那就在action中去调用你所需要的service。
+忘记 CRUD！你的 API 应该体现**业务用例**，而不是什么技术方面的所谓「数据库操作」CRUD。不要把业务逻辑放进 action 里，action 仅仅是调用域名层，即 service。如果你想在其他 action 内复用相同的业务逻辑，那就在 action 中去调用你所需要的 service。
 
 ### Services 服务
 
@@ -745,31 +747,31 @@ complex [business logic](https://en.wikipedia.org/wiki/Business_logic).
 
 域名是你放置复杂业务逻辑的地方。
 
-Instead of putting the logic into gigantic (fat) "Models", we put the logic into smaller, 
+Instead of putting the logic into gigantic (fat) "Models", we put the logic into smaller,
 specialized **Service** classes, aka Application Service.
 
-我们将逻辑分为更小的Service类，又名Application Service，而不是将复杂的逻辑放在Model层。
+我们将逻辑分为更小的 Service 类，又名 Application Service，而不是将复杂的逻辑放在 Model 层。
 
-A service provides a specific functionality or a set of functionalities, such as the retrieval of 
-specified information or the execution of a set of operations, with a purpose that different clients 
+A service provides a specific functionality or a set of functionalities, such as the retrieval of
+specified information or the execution of a set of operations, with a purpose that different clients
 can reuse for different purposes.
 
-一个service提供了一整套详细的功能，例如搜集一些详细的信息或执行一系列操作，每个不同的客户都可以以不同的目的复用service。
+一个 service 提供了一整套详细的功能，例如搜集一些详细的信息或执行一系列操作，每个不同的客户都可以以不同的目的复用 service。
 
-There can be multiple clients for a service, e.g. the action (request), 
+There can be multiple clients for a service, e.g. the action (request),
 another service, the CLI (console) and the unit-test environment (phpunit).
 
-一个service可以有很多客户：action（请求），其他service，CLI（console）以及单元测试。
+一个 service 可以有很多客户：action（请求），其他 service，CLI（console）以及单元测试。
 
 > A service class is not a "Manager" or "Utility" class.
 
 Each service class should have only one responsibility, e.g. to transfer money from A to B, and not more.
 
-每个service都应该有且只有一个责任，比如说从A转账到B。
+每个 service 都应该有且只有一个责任，比如说从 A 转账到 B。
 
 Separate **data** from **behavior** by using services for the behavior and DTO's for the data.
 
-用service和DTO将**数据**与**行为**分离
+用 service 和 DTO 将**数据**与**行为**分离
 
 The directory for all (domain) modules and sub-modules is: `src/Domain`
 
@@ -791,21 +793,21 @@ $service = new UserCreator();
 $service->createUser($user);
 ```
 
-### Data Transfer Objects (DTO) 数据转移对象DTO
+### Data Transfer Objects (DTO) 数据转移对象 DTO
 
-A DTO contains only pure **data**. There is no business or domain specific logic. 
-There is also no database access within a DTO. 
+A DTO contains only pure **data**. There is no business or domain specific logic.
+There is also no database access within a DTO.
 
-一个DTO只负责处理数据，没有具体的业务逻辑，也没有数据库操作。
+一个 DTO 只负责处理数据，没有具体的业务逻辑，也没有数据库操作。
 
-A service fetches data from a repository and  the repository (or the service) 
+A service fetches data from a repository and the repository (or the service)
 fills the DTO with data. A DTO can be used to transfer data inside or outside the domain.
 
-一个service从仓库中获取数据，仓库（或service）用数据填充DTO。一个DTO可以在域名内外用来处理数据。
+一个 service 从仓库中获取数据，仓库（或 service）用数据填充 DTO。一个 DTO 可以在域名内外用来处理数据。
 
 Create a DTO class to hold the data in this file: `src/Domain/User/Data/UserCreateData.php`
 
-新建一个DTO类`src/Domain/User/Data/UserCreateData.php`，用来保存数据。
+新建一个 DTO 类`src/Domain/User/Data/UserCreateData.php`，用来保存数据。
 
 ```php
 <?php
@@ -888,7 +890,7 @@ final class UserCreator
 Take a look at the **constructor**! You can see that we have declared the `UserCreatorRepository` as a
 dependency, because the service can only interact with the database through the repository.
 
-看一下**构造函数**！你可以看到我们声明了`UserCreatorRepository`作为一个依赖，因为只有service可以在repository和db间互动。
+看一下**构造函数**！你可以看到我们声明了`UserCreatorRepository`作为一个依赖，因为只有 service 可以在 repository 和 db 间互动。
 
 ### Repositories 仓库
 
@@ -896,27 +898,27 @@ A repository is responsible for the data access logic, communication with databa
 
 一个仓库服务于数据访问逻辑，也就是与数据库做交互。
 
-There are two types of repositories: collection-oriented and persistence-oriented repositories. 
-In this case, we are talking about **persistence-oriented repositories**, since these are better 
+There are two types of repositories: collection-oriented and persistence-oriented repositories.
+In this case, we are talking about **persistence-oriented repositories**, since these are better
 suited for processing large amounts of data.
 
 有两种类型的仓库：面向集合和面向持久性仓库。我们讨论**面向持久性仓库**，因为对于处理较多数据时他们较优。
 
-A repository is the source of all the data your application needs 
-and mediates between the service and the database. A repository improves code maintainability, testing and readability by separating **business logic** 
-from **data access logic** and provides centrally managed and consistent access rules for a data source. 
-Each public repository method represents a query. The return values represent the result set 
-of a query and can be primitive/object or list (array) of them. Database transactions must 
+A repository is the source of all the data your application needs
+and mediates between the service and the database. A repository improves code maintainability, testing and readability by separating **business logic**
+from **data access logic** and provides centrally managed and consistent access rules for a data source.
+Each public repository method represents a query. The return values represent the result set
+of a query and can be primitive/object or list (array) of them. Database transactions must
 be handled on a higher level (service) and not within a repository.
 
-仓库是你的app的数据资源，是在service和db中的交互。通过将业务逻辑和数据处理逻辑分开，仓库可以提高代码的可维护性，可测试性以及可阅读性并且提供了中心一致化管理规则。每个公共仓库方法都代表了一行query（译者注：SQL代码）。返回值则是query返回的数据，可以是一个对象，也可以是一个list，一个数组。数据库事务必须在更高级的层面处理（service）而不是在仓库内。
+仓库是你的 app 的数据资源，是在 service 和 db 中的交互。通过将业务逻辑和数据处理逻辑分开，仓库可以提高代码的可维护性，可测试性以及可阅读性并且提供了中心一致化管理规则。每个公共仓库方法都代表了一行 query（译者注：SQL 代码）。返回值则是 query 返回的数据，可以是一个对象，也可以是一个 list，一个数组。数据库事务必须在更高级的层面处理（service）而不是在仓库内。
 
 ### Creating a repository 建立一个仓库
 
 For this tutorial we need a test database with a `users` table.
 Please execute this SQL statement in your test database.
 
-创建`users`表，在`test`数据库中执行以下SQL代码。
+创建`users`表，在`test`数据库中执行以下 SQL 代码。
 
 ```sql
 CREATE TABLE `users` (
@@ -979,10 +981,10 @@ PDO::class => function (ContainerInterface $container) {
 },
 ```
 
-From now on, PHP-DI will always inject the same PDO instance as soon as we declare PDO in a 
+From now on, PHP-DI will always inject the same PDO instance as soon as we declare PDO in a
 constructor as dependency.
 
-从今以后，如果我们在构造函数中声明PDO为一个依赖，那么PHP-DI就会为我们注入相同的PDO作为依赖。
+从今以后，如果我们在构造函数中声明 PDO 为一个依赖，那么 PHP-DI 就会为我们注入相同的 PDO 作为依赖。
 
 Create a new directory: `src/Domain/User/Repository`
 
@@ -1036,10 +1038,10 @@ class UserCreatorRepository
             'email' => $user->email,
         ];
 
-        $sql = "INSERT INTO users SET 
-                username=:username, 
-                first_name=:first_name, 
-                last_name=:last_name, 
+        $sql = "INSERT INTO users SET
+                username=:username,
+                first_name=:first_name,
+                last_name=:last_name,
                 email=:email;";
 
         $this->connection->prepare($sql)->execute($row);
@@ -1052,7 +1054,7 @@ class UserCreatorRepository
 
 Note that we have declared `PDO` as a dependency, because the repository requires a database connection.
 
-注意，我们声明了PDO作为一个依赖，因为这个仓库需要连接数据库。
+注意，我们声明了 PDO 作为一个依赖，因为这个仓库需要连接数据库。
 
 The last part is to register a new route for `POST /users`.
 
@@ -1107,17 +1109,17 @@ final class UserCreateAction
 }
 ```
 
-In this example, we create a "barrier" between source data and output, 
-so that schema changes do not affect the clients. For the sake of 
-simplicity, this is done using the same method. In reality, you would 
-separate the input data mapping and output JSON conversion into 
+In this example, we create a "barrier" between source data and output,
+so that schema changes do not affect the clients. For the sake of
+simplicity, this is done using the same method. In reality, you would
+separate the input data mapping and output JSON conversion into
 separate parts of your application.
 
-在我们的例子中，我们在源数据和输出之间建立了一道屏障，这个变化不会影响到客户。为了简化，我们用了相同的方法。实际上，你或许会将数据映射和JSON输出放在app的不同地方。
+在我们的例子中，我们在源数据和输出之间建立了一道屏障，这个变化不会影响到客户。为了简化，我们用了相同的方法。实际上，你或许会将数据映射和 JSON 输出放在 app 的不同地方。
 
 Add the new route in `config/routes.php`:
 
-在`config/routes.php`为我们的api新建路由
+在`config/routes.php`为我们的 api 新建路由
 
 ```php
 $app->post('/users', \App\Action\UserCreateAction::class);
@@ -1135,7 +1137,7 @@ Now you can test the `POST /users` route with [Postman](https://www.getpostman.c
 
 If successful, the result should look like this:
 
-如果一切正常，输入下图的4个Body参数后应该会返回user_id。
+如果一切正常，输入下图的 4 个 Body 参数后应该会返回 user_id。
 
 ![image](https://dev.azure.com/zslyvain/9285f0e6-8055-4a5c-aec3-50d9555ac078/_apis/git/repositories/4eb461c6-bb1f-489f-978b-686e8c32decf/items?path=%2F1625856545626_8210.png&versionDescriptor%5BversionOptions%5D=0&versionDescriptor%5BversionType%5D=0&versionDescriptor%5Bversion%5D=master&resolveLfs=true&%24format=octetStream&api-version=5.0)
 
@@ -1145,10 +1147,10 @@ For deployment on a productive server, there are some important settings and sec
 
 在生产环境下部署需要注意一些有关安全的事项。
 
-You can use composer to generate an optimized build of your application. 
-All dev-dependencies are removed and the Composer autoloader is optimized for performance. 
+You can use composer to generate an optimized build of your application.
+All dev-dependencies are removed and the Composer autoloader is optimized for performance.
 
-你可以使用从composer来生成优化编译。
+你可以使用从 composer 来生成优化编译。
 
 Run this command in the same directory as the project’s composer.json file:
 
@@ -1159,10 +1161,10 @@ composer install --no-dev --optimize-autoloader
 ```
 
 You don't have to run composer on your production server. Instead you should implement a [build pipeline](https://www.amazon.com/dp/B003YMNVC0) that creates
-an so called "artifact". An artifact is an ZIP file you can upload and deploy on your production server. 
+an so called "artifact". An artifact is an ZIP file you can upload and deploy on your production server.
 [selective-php/artifact](https://github.com/selective-php/artifact) is a tool to build artifacts from your source code.
 
-你没有必要在运行环境下使用composer，相反地你应该实现一个流水线编译产物——artifact，产物。一个产物是一个ZIP压缩包，可以上传并部署到你的生产环境服务器，[selective-php/artifact](https://github.com/selective-php/artifact)是一个不错的工具。
+你没有必要在运行环境下使用 composer，相反地你应该实现一个流水线编译产物——artifact，产物。一个产物是一个 ZIP 压缩包，可以上传并部署到你的生产环境服务器，[selective-php/artifact](https://github.com/selective-php/artifact)是一个不错的工具。
 
 For security reasons, you should switch off the output of all error details in production:
 
@@ -1176,12 +1178,12 @@ $settings['error_handler_middleware'] = [
 
 If you have to run your Slim application in a sub-directory, you could try this library: [selective/basepath](https://github.com/selective-php/basepath)
 
-如果你需要在服务器子目录下运行你的app，使用[selective/basepath](https://github.com/selective-php/basepath)库。
+如果你需要在服务器子目录下运行你的 app，使用[selective/basepath](https://github.com/selective-php/basepath)库。
 
-**Important**: It's very important to set the Apache `DocumentRoot` to the `public/` directory. 
+**Important**: It's very important to set the Apache `DocumentRoot` to the `public/` directory.
 Otherwise, it may happen that someone else could access internal files from the web. [More details](https://www.digitalocean.com/community/tutorials/how-to-move-an-apache-web-root-to-a-new-location-on-ubuntu-16-04)
 
-将Apache的`DocumentRoot`设置为`public/`是很重要的，否则会产生一些权限的安全性问题：
+将 Apache 的`DocumentRoot`设置为`public/`是很重要的，否则会产生一些权限的安全性问题：
 
 `/etc/apache2/sites-enabled/000-default.conf`
 
@@ -1189,10 +1191,10 @@ Otherwise, it may happen that someone else could access internal files from the 
 DocumentRoot /var/www/example.com/htdocs/public
 ```
 
-**Tip:** Never store secret passwords in your git / SVN repository. 
+**Tip:** Never store secret passwords in your git / SVN repository.
 Instead you could store them in a file like `env.php` and place this file one directory above your application directory. e.g.
 
-不要把你的密码也上传到git / SVN仓库，你可以把他们放在一个文件里，例如下面这样，在app的目录的上一级。
+不要把你的密码也上传到 git / SVN 仓库，你可以把他们放在一个文件里，例如下面这样，在 app 的目录的上一级。
 
 ```
 /var/www/example.com/env.php
@@ -1200,24 +1202,24 @@ Instead you could store them in a file like `env.php` and place this file one di
 
 ## Conclusion 结论
 
-Remember the relationships: 
+Remember the relationships:
 
-* Slim - To handle routing and dispatching 用来处理路由
-* Single Action Controllers - To invoke the correct service method (domain) 用来调用domain的方法
-* Domain - The core of your application 你的app的核心
-* Services - To handle business logic 业务逻辑
-* DTO - To carry data (no behavior) 数据处理
-* Repositories - To execute database queries 数据库交互
+- Slim - To handle routing and dispatching 用来处理路由
+- Single Action Controllers - To invoke the correct service method (domain) 用来调用 domain 的方法
+- Domain - The core of your application 你的 app 的核心
+- Services - To handle business logic 业务逻辑
+- DTO - To carry data (no behavior) 数据处理
+- Repositories - To execute database queries 数据库交互
 
 ## FAQ
 
 ### How to add JSON Web Token (JWT) / Bearer authentication?
 
-Read this article: [Slim 4 - OAuth 2.0 and JSON Web Token Setup](https://odan.github.io/2019/12/02/slim4-oauth2-jwt.html) 
+Read this article: [Slim 4 - OAuth 2.0 and JSON Web Token Setup](https://odan.github.io/2019/12/02/slim4-oauth2-jwt.html)
 
 ### CORS
 
-Read more about [CORS](https://odan.github.io/2019/11/24/slim4-cors.html): 
+Read more about [CORS](https://odan.github.io/2019/11/24/slim4-cors.html):
 
 ### Where can I find the code on github?
 
@@ -1228,7 +1230,7 @@ A complete skeleton for slim 4 can be found here: https://github.com/odan/slim4-
 ### How to add a logger?
 
 You could inject a logger factory, e.g. like the [LoggerFactory](https://github.com/odan/slim4-skeleton/blob/master/src/Factory/LoggerFactory.php)
-The settings are defined [here](https://github.com/odan/slim4-skeleton/blob/master/config/defaults.php#L43). 
+The settings are defined [here](https://github.com/odan/slim4-skeleton/blob/master/config/defaults.php#L43).
 
 ### I get a 404 (not found) error
 
@@ -1244,17 +1246,17 @@ Run `composer update` to fix it.
 
 You can add a query builder as described here:
 
-* [Slim 4 - Laminas Query Builder Setup](https://odan.github.io/2019/12/01/slim4-laminas-db-query-builder-setup.html)
-* [Slim 4 - CakePHP Query Builder Setup](https://odan.github.io/2019/12/03/slim4-cakephp-query-builder.html)
-* [Slim 4 - Eloquent Setup](https://odan.github.io/2019/12/03/slim4-eloquent.html)
+- [Slim 4 - Laminas Query Builder Setup](https://odan.github.io/2019/12/01/slim4-laminas-db-query-builder-setup.html)
+- [Slim 4 - CakePHP Query Builder Setup](https://odan.github.io/2019/12/03/slim4-cakephp-query-builder.html)
+- [Slim 4 - Eloquent Setup](https://odan.github.io/2019/12/03/slim4-eloquent.html)
 
 ### How to build assets with webpack?
 
-* [Slim 4 - Compiling Assets with Webpack](https://odan.github.io/2019/09/21/slim4-compiling-assets-with-webpack.html)
+- [Slim 4 - Compiling Assets with Webpack](https://odan.github.io/2019/09/21/slim4-compiling-assets-with-webpack.html)
 
 ## Read more
 
-* [Slim 4 - Cheatsheet and FAQ](https://odan.github.io/2019/09/09/slim-4-cheatsheet-and-faq.html)
+- [Slim 4 - Cheatsheet and FAQ](https://odan.github.io/2019/09/09/slim-4-cheatsheet-and-faq.html)
 
 ---
 
