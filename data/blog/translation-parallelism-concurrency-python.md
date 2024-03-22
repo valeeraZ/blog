@@ -554,7 +554,7 @@ if __name__ == "__main__":
 
 ### Go
 
-Go 使用“goroutines”和“channels”，而不是我们之前介绍的所有语言固有的传统 async / await 语法。你可以将 channel 视为类似于 Python 的 future。在 Go 中，可以将 channel 作为参数发送给函数，然后使用 `go` 并发运行该函数。当需要确保函数完成时，可以使用 <- 语法，可以将其视为更常见的 `await` 语法。如果你的 goroutine（你的异步运行的函数）有返回值，则可以通过这种方式返回值。
+Go 使用“goroutines”和“channels”，而不是我们之前介绍的所有语言固有的传统 async / await 语法。你可以将 channel 视为类似于 Python 的 future。在 Go 中，可以将 channel 作为参数发送给函数，然后使用 `go` 并发运行该函数。当需要确保函数完成时，可以使用 `<-` 语法，可以将其视为更常见的 `await` 语法。如果你的 goroutine（你的异步运行的函数）有返回值，则可以通过这种方式返回值。
 
 ```go
 package main
