@@ -2,7 +2,7 @@ const siteMetadata = {
   title: 'Wenzhuo Blog',
   author: 'Wenzhuo Zhao',
   headerTitle: 'WenzhuoBlog',
-  description: 'Full Stack Developer, Working on search algorithms',
+  description: 'Software Engineer, Working with data and finance engineering',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://sylvainz.me',
