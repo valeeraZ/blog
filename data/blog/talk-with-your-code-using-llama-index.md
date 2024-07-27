@@ -361,19 +361,23 @@ In the above code, I use a memory chat store who store the chat conversation mes
 react_agent.chat('In this application, what does the function split_text_into_chunks in api/api/web/service/file_chunk.py do?')
 ```
 
-_Thought: The current language of the user is: English. I need to use a tool to help me answer the question.  
-Action: query_engine_tool  
-Action Input: {'input': 'What does the function split_text_into_chunks in api/api/web/service/file_chunk.py do?'}  
-Observation: The function split_text_into_chunks in api/web/service/file_chunk.py splits a given text into chunks based on an ideal token size. It calculates the ideal size for each chunk, divides the text into chunks of that size, and returns a list of these chunks.  
-Thought: I can answer without using any more tools. I'll use the user's language to answer  
-Answer: The function `split_text_into_chunks` in `file_chunk.py` splits a given text into chunks based on an ideal token size. It calculates the ideal size for each chunk, divides the text into chunks of that size, and returns a list of these chunks._
+```
+Thought: The current language of the user is: English. I need to use a tool to help me answer the question.
+Action: query_engine_tool
+Action Input: {'input': 'What does the function split_text_into_chunks in api/api/web/service/file_chunk.py do?'}
+Observation: The function split_text_into_chunks in api/web/service/file_chunk.py splits a given text into chunks based on an ideal token size. It calculates the ideal size for each chunk, divides the text into chunks of that size, and returns a list of these chunks.
+Thought: I can answer without using any more tools. I'll use the user's language to answer
+Answer: The function `split_text_into_chunks` in `file_chunk.py` splits a given text into chunks based on an ideal token size. It calculates the ideal size for each chunk, divides the text into chunks of that size, and returns a list of these chunks.
+```
 
 ```python
 react_agent.chat("What is my last question?")
 ```
 
-_Thought: (Implicit) I can answer without any more tools!  
-Answer: Your last question was "In this application, what does the function split_text_into_chunks in api/api/web/service/file_chunk.py do?"_
+```
+Thought: (Implicit) I can answer without any more tools!
+Answer: Your last question was "In this application, what does the function split_text_into_chunks in api/api/web/service/file_chunk.py do?"
+```
 
 You can actually see more details from the output of the code above, who shows that the agent has found relative documents about the question as RAG process.
 
