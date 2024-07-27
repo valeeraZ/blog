@@ -58,7 +58,6 @@ services:
 ## Load the code from the repository
 
 Load your `GITHUB_TOKEN` from the environment variable, choose a repository you want to load the code from.
-See more details in <https://docs.llamaindex.ai/en/stable/examples/data_connectors/GithubRepositoryReaderDemo/>
 
 ```python
 github_token = os.environ.get("GITHUB_TOKEN")
@@ -79,6 +78,8 @@ documents = GithubRepositoryReader(
     verbose=False,
 ).load_data(branch=branch) # commit or branch
 ```
+
+> See more details in about [GithubRepositoryReaderDemo](https://docs.llamaindex.ai/en/stable/examples/data_connectors/GithubRepositoryReaderDemo/)
 
 Use `len(documents)` we can see 41 documents are loaded from the repository.
 
