@@ -2,18 +2,17 @@
 name: Wenzhuo Zhao
 avatar: /static/images/avatar.png
 occupation: Finance Engineer
-company: HSBC Guangzhou
 email: zslyvain@gmail.com
 # twitter: https://twitter.com/Twitter
 linkedin: https://www.linkedin.com/in/wenzhuo-zhao-cs-dev/
 github: https://github.com/valeeraZ
 ---
 
-I'm Wenzhuo Zhao, a software engineer.
+I'm David, a software engineer.
 
 Have been studying and working in France for 7 years in the field of computer science and finance industry, working with data engineering, web development, and financial engineering.
 
-Currently working as Finance Engineer at HSBC Guangzhou, Guangdong, China.
+Working with Python and interested in DevOps with Kubernetes, Istio.
 
 Research directions during master: **computational geometry algorithms**, **complex graph algorithms**, development of web applications.
 
